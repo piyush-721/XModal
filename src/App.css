@@ -2,12 +2,27 @@
   text-align: center;
 }
 
-.modal{
+.modal-content{
   border-radius: 18px;
   height: 450px;
   width: 550px;
   margin: 80px auto 0px auto;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25); 
+  background-color: white;
+  margin-top: 120px;
+}
+
+.modal {
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.2); /* Slight dim */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
 }
 label{
   font-weight: bold;

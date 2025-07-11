@@ -1,15 +1,17 @@
 import './App.css';
-import React, {useState, useEffect} from 'react';
+import React, {useState, useRef} from 'react';
 
 function App() {
 
   const [isOpen, setIsOpen] = useState(false);
   const [formData, setFormData] = useState({
-    userName: "",
+    username: "",
     email: "", 
-    phoneNumber: "",
+    phone: "",
     dob: "",
   })
+
+  const emailRef = useRef();
 
   const handleOpenForm = () => {
     setIsOpen(!isOpen);
@@ -18,21 +20,36 @@ function App() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    if (!formData.username || !formData.email || !formData.phone || !formData.dob) {
+      alert("All fields are required.");
+      return;
+    }
+
     const today = new Date();
     console.log(today);
     today.setHours(0, 0, 0, 0);
     console.log(today);
     
-    const selectedDate = new Date(formData.date);
+    const selectedDate = new Date(formData.dob);
     selectedDate.setHours(0, 0, 0, 0);
 
     if(selectedDate > today){
       alert("Invalid date of birth. Date of birth cannot be in the future.");
+      return;
     }
 
-    if(formData.phoneNumber < 10){
+    if(!formData.phone || formData.phone.length < 10){
       alert("Invalid phone number. Please enter a 10-digit phone number.");
+      return;
     }
+
+    setFormData({
+      username: "",
+      email: "", 
+      phone: "",
+      dob: "",
+    });
+
   }
 
   const handleChange = (e) => {
@@ -49,8 +66,8 @@ function App() {
       <button className='open-btn' onClick={handleOpenForm}>Open Form</button>
 
     {isOpen && (
-      <div className="modal">
-            <div className="modal-content">
+      <div className="modal" onClick={() => setIsOpen(false)}>
+            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
               <h2>Fill Details</h2>
               <form onSubmit={handleSubmit}>
                 <label htmlFor='username'>Username:</label> <br />
@@ -58,7 +75,7 @@ function App() {
                   type='text'
                   id='username'
                   name='username'
-                  value={formData.userName}
+                  value={formData.username}
                   onChange={handleChange}
                   required
                 /> <br />
@@ -70,6 +87,7 @@ function App() {
                   name='email'
                   value={formData.email}
                   onChange={handleChange}
+                  ref={emailRef}
                   required
                 /> <br />
 
@@ -78,13 +96,13 @@ function App() {
                   type='tel'
                   id='phone'
                   name='phone'
-                  value={formData.phoneNumber}
+                  value={formData.phone}
                   onChange={handleChange}
                   required
                 /> <br />
 
                 <label htmlFor='dob'>Date of Birth:</label> <br />
-                <input 
+                <input
                   type='date'
                   id='dob'
                   name='dob'
